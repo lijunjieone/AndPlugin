@@ -1,46 +1,39 @@
 ##目标
 
 可以让客户端在运行过程中下载实现代码，修改实现逻辑。客户端从服务器获取最新实现代码，动态加载，最终动态修改业务逻辑，可以应用在插件中。
-
-##实现
+##代码
+[github源码地址](https://github.com/lijunjieone/AndPlugin)
+##详解
 
 首先要定义出功能接口
 
 <code>
-package com.dynamic;
+package com.coal.plugin.impl;
 
 public interface IDynamic {
     public String helloWorld();
+
 }
+
 </code>
 接在在本地完成实现接口
 <code>
-package com.dynamic;
+package com.coal.plugin.impl;
 
-public class DynamicTest implements IDynamic {
+public class DynamicImpl implements IDynamic {
+
     @Override
     public String helloWorld() {
-        return "Hello World!";
+        return "This is content from Plugin!";
     }
 }
 </code>
 
-上述代码应该在插件工程内完成。
-
-下面需要编写调用程序工程
-在调用工程内也同样需要定义相同的接口，动态加载用来实现这个接口
+上述代码应该在插件包内完成。
+下面需要编写调用程序
+下面是调用方法，
 <code>
-package com.dynamic;
-
-public interface IDynamic {
-    public String helloWorld();
-
-}
-</code>
-
-下面是调用方法，调用方法可以放在任何android工程中。
-<code>
-		private void ShowPluginContent() {
+		private void showPluginContent() {
             final File optimizedDexOutputPath = new File("/sdcard/a.jar");
             Log.e(LOGTAG,"file="+optimizedDexOutputPath.getAbsolutePath());
             File dexOutputDir = getActivity().getDir("dex", 0);
@@ -48,7 +41,7 @@ public interface IDynamic {
             		dexOutputDir.getAbsolutePath(), null, getActivity().getClassLoader());
                 Class libProviderClazz = null;
                 try {
-                    libProviderClazz = cl.loadClass("com.dynamic.DynamicTest");
+                    libProviderClazz = cl.loadClass("com.coal.plugin.impl.DynamicImpl");
                     IDynamic lib = (IDynamic)libProviderClazz.newInstance();
                     Toast.makeText(getActivity(), lib.helloWorld(), Toast.LENGTH_SHORT).show();
                 } catch (Exception exception) {
@@ -59,7 +52,8 @@ public interface IDynamic {
 </code>
 
 接下来需要从插件工程中导出jar文件
-![export.png](http://upload-images.jianshu.io/upload_images/47510-54c0779b8c98f632.png)
+
+![export.png](http://upload-images.jianshu.io/upload_images/47510-d1aecbc46bfaacdb.png)
 
 然后我们需要把jar通过dx工具进行处理，便于android能够识别这个格式。
 
