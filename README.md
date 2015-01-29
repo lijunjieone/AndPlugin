@@ -7,7 +7,7 @@
 
 首先要定义出功能接口
 
-<code>
+``` Java
 package com.coal.plugin.impl;
 
 public interface IDynamic {
@@ -15,9 +15,9 @@ public interface IDynamic {
 
 }
 
-</code>
+```
 接在在本地完成实现接口
-<code>
+``` Java
 package com.coal.plugin.impl;
 
 public class DynamicImpl implements IDynamic {
@@ -27,12 +27,12 @@ public class DynamicImpl implements IDynamic {
         return "This is content from Plugin!";
     }
 }
-</code>
+```
 
 上述代码应该在插件包内完成。
 下面需要编写调用程序
 下面是调用方法，
-<code>
+``` Java
 		private void showPluginContent() {
             final File optimizedDexOutputPath = new File("/sdcard/a.jar");
             Log.e(LOGTAG,"file="+optimizedDexOutputPath.getAbsolutePath());
@@ -49,7 +49,7 @@ public class DynamicImpl implements IDynamic {
                 }
 		}
 
-</code>
+```
 
 接下来需要从插件工程中导出jar文件
 
@@ -73,9 +73,9 @@ public class DynamicImpl implements IDynamic {
 产生了这个异常android4.1.2 DexClassLoader is not owned by the current user。
 解决办法：
  DexClassLoader的第二个参数权限所致。使用
-<code>
-File dexOutputDir = context.getDir("dex", 0);
-</code>
+
+>File dexOutputDir = context.getDir("dex", 0);
+
 问题2：
 产生了java.lang.IllegalAccessError: Class ref in pre-verified class resolved to unexpected implementation
 原因：
@@ -95,6 +95,7 @@ File dexOutputDir = context.getDir("dex", 0);
 
 ##参考
 [参考1](http://www.alloyteam.com/2014/04/android-cha-jian-yuan-li-pou-xi/)
+
 
 
 
